@@ -10,24 +10,27 @@ namespace MyProject.BusinessLogic.Entitys
         [Key]
         public int UserId { get; set; }
 
-        [Required, Range(3, 30)]
+        [StringLength(20, MinimumLength = 2, ErrorMessage = "Username should be between 2 and 20 characters long")]
         public string Username { get; set; }
 
-        [Required, Range(3, 30)]
+        [Required]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Name should be between 3 and 30 characters long")]
         public string Name { get; set; }
 
-        [Required, Range(8, 30)]
+        [Required]
+        [StringLength(30, MinimumLength = 8, ErrorMessage = "Password should be between 8 and 30 characters long")]
         public string Password { get; set; }
 
         [Required]
+        [StringLength(30, MinimumLength = 8, ErrorMessage = "Email should be between 8 and 30 characters long")]
         public string Email { get; set; }
 
-        [Required, Range(2,15)]
+        [Required]
+        [StringLength(15, MinimumLength = 9, ErrorMessage = "Phone should be between 9 and 13 characters long")]
         public string Phone { get; set; }
 
         [ForeignKey(nameof(CountryId))]
         public int CountryId { get; set; }
         public Country Country { get; set; }
-
     }
 }
