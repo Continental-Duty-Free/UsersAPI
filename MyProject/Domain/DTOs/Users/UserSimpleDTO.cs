@@ -1,4 +1,4 @@
-﻿namespace UsersAPI.BusinessLogic.DTOs.Users
+﻿namespace UsersAPI.Domain.DTOs.Users
 {
     public class UserSimpleDTO
     {

@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyProject.BusinessLogic.Entitys
+namespace UsersAPI.Domain.Entitys
 {
     
     public class User
     {
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Username should be between 2 and 20 characters long")]
         public string Username { get; set; }
@@ -23,14 +23,11 @@ namespace MyProject.BusinessLogic.Entitys
 
         [Required]
         [StringLength(30, MinimumLength = 8, ErrorMessage = "Email should be between 8 and 30 characters long")]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [StringLength(15, MinimumLength = 9, ErrorMessage = "Phone should be between 9 and 13 characters long")]
         public string Phone { get; set; }
-
-        [ForeignKey(nameof(CountryId))]
-        public int CountryId { get; set; }
-        public Country Country { get; set; }
     }
 }

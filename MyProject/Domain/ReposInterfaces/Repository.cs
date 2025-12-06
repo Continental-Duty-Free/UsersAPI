@@ -1,4 +1,4 @@
-﻿namespace MyProject.BusinessLogic.ReposInterfaces
+﻿namespace UsersAPI.Domain.ReposInterfaces
 {
     public interface Repository<T>
     {

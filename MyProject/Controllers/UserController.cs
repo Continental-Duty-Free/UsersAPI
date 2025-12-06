@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.AppLogic.UseCasesInterfaces.Users;
-using UsersAPI.BusinessLogic.DTOs.Users;
+using UsersAPI.Domain.DTOs.Users;
 
 namespace MyProject.Controllers
 {
@@ -28,6 +28,23 @@ namespace MyProject.Controllers
             {
                 createUser.Run(user);
                 return Ok(new { message = "User registered successfully "});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpPost("Login")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        public IActionResult Login([FromBody] CreateUserDTO user)
+        {
+            try
+            {
+                createUser.Run(user);
+                return Ok(new { message = "User registered successfully " });
             }
             catch (Exception ex)
             {

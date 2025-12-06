@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyProject.BusinessLogic.Entitys;
+using UsersAPI.Domain.Entitys;
 
 namespace MyProject.Data.Repos.EF
 {
@@ -11,6 +11,5 @@ namespace MyProject.Data.Repos.EF
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Country> Countries { get; set; }
     }
 }

@@ -1,7 +1,7 @@
-﻿using MyProject.BusinessLogic.Entitys;
-using UsersAPI.BusinessLogic.DTOs.Users;
+﻿using UsersAPI.Domain.DTOs.Users;
+using UsersAPI.Domain.Entitys;
 
-namespace UsersAPI.BusinessLogic.Mappers
+namespace UsersAPI.Domain.Mappers
 {
     public class UserMapper
     {

@@ -1,6 +1,6 @@
-﻿using MyProject.BusinessLogic.Entitys;
-using MyProject.Data.Repos.EF;
-using UsersAPI.BusinessLogic.ReposInterfaces;
+﻿using MyProject.Data.Repos.EF;
+using UsersAPI.Domain.Entitys;
+using UsersAPI.Domain.ReposInterfaces;
 
 namespace UsersAPI.Data.Repos.EF
 {

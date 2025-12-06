@@ -1,8 +1,8 @@
 ﻿using MyProject.AppLogic.UseCasesInterfaces.Users;
-using MyProject.BusinessLogic.Entitys;
 using System.ComponentModel.DataAnnotations;
-using UsersAPI.BusinessLogic.DTOs.Users;
-using UsersAPI.BusinessLogic.ReposInterfaces;
+using UsersAPI.Domain.DTOs.Users;
+using UsersAPI.Domain.ReposInterfaces;
+using UsersAPI.Domain.Entitys;
 
 namespace MyProject.AppLogic.UseCasesImplementation.Users
 {

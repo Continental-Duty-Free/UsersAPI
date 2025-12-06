@@ -1,4 +1,4 @@
-﻿using UsersAPI.BusinessLogic.DTOs.Users;
+﻿using UsersAPI.Domain.DTOs.Users;
 
 namespace MyProject.AppLogic.UseCasesInterfaces.Users
 {
