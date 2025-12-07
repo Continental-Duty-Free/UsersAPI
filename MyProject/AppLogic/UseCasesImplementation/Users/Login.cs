@@ -2,6 +2,7 @@
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
+using UsersAPI.Domain.EntitysExceptions;
 using UsersAPI.Domain.Mappers;
 using UsersAPI.Domain.ReposInterfaces;
 
@@ -22,12 +23,12 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Users
         {
             User user = repository.FindByEmail(email);
             if (user == null)
-                throw new Exception("Invalid credentials or user not found");
+                throw new UserException("Invalid credentials or user not found");
 
             Person person = repository.GetPersonByUserId(user.Id);
             var result = passwordHasher.VerifyHashedPassword(person, person.Password, password);
             if (result != PasswordVerificationResult.Success)
-                throw new Exception("Invalid credentials or user not found");
+                throw new UserException("Invalid credentials or user not found");
 
             return user;
         }

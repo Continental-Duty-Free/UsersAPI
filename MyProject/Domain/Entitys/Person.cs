@@ -24,6 +24,7 @@ namespace UsersAPI.Domain.Entitys
 
         [Required]
         [StringLength(255)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using MyProject.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
+using UsersAPI.Domain.EntitysExceptions;
 
 namespace MyProject.Controllers
 {
@@ -16,15 +17,17 @@ namespace MyProject.Controllers
         private readonly ICreateUser createUser;
         private readonly ILogin login;
         private readonly Token tokenService;
-        public UserController(ICreateUser createUser, ILogin login, Token tokenService)
+        private readonly ILogger logger;
+        public UserController(ICreateUser createUser, ILogin login, Token tokenService, ILogger logger)
         {
             this.createUser = createUser;
             this.login = login;
             this.tokenService = tokenService;
+            this.logger = logger;
         }
 
         [HttpPost("Register")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         public IActionResult Register([FromBody] CreateUserDTO payload)
@@ -32,10 +35,16 @@ namespace MyProject.Controllers
             try
             {
                 createUser.Run(payload);
-                return Ok(new { message = "User registered successfully "});
+                return Ok(new { message = "User registered successfully" });
+            }
+            catch (UserException ex)
+            {
+                logger.LogWarning(ex.Message);
+                return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)
             {
+                logger.LogError("An error ocurred while trying to create a new user " + ex.Message);
                 return StatusCode(500, new { error = ex.Message });
             }
         }
@@ -53,11 +62,18 @@ namespace MyProject.Controllers
                 return Ok(new
                 {
                     message = "Login successfull!",
-                    token = accessToken
+                    token = accessToken,
+                    name = user.Person.Name
                 });
+            }
+            catch (UserException ex)
+            {
+                logger.LogWarning(ex.Message);
+                return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)
             {
+                logger.LogError("An error ocurred while trying to make a Login " + ex.Message);
                 return StatusCode(500, new { error = ex.Message });
             }
         }

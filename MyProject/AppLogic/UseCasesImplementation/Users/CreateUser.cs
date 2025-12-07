@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
+using UsersAPI.Domain.EntitysExceptions;
 using UsersAPI.Domain.Mappers;
 using UsersAPI.Domain.ReposInterfaces;
 
@@ -23,7 +24,7 @@ namespace MyProject.AppLogic.UseCasesImplementation.Users
         public void Run(CreateUserDTO dto)
         {
             if (repository.FindByEmail(dto.Email) != null)
-                throw new Exception("Please be so kind of choosing another email");
+                throw new UserException("Please be so kind of choosing another email");
             var createdUser = repository.Create(UserMapper.CreateUserDTO_To_User(dto));
             CreatePerson(dto, createdUser);
         }
