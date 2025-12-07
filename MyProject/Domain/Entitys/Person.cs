@@ -10,10 +10,8 @@ namespace UsersAPI.Domain.Entitys
         public int Id { get; set; }
 
         [Required]
-        [Key]
         [ForeignKey(nameof(UserId))]
         public int UserId { get; set; }
-
         public User User { get; set; }
 
         [Required]
@@ -25,7 +23,7 @@ namespace UsersAPI.Domain.Entitys
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(40, MinimumLength = 8, ErrorMessage = "Password should be between 8 and 40 characters long")]
+        [StringLength(255)]
         public string Password { get; set; }
     }
 }

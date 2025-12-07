@@ -27,11 +27,11 @@ namespace MyProject.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult Register([FromBody] CreateUserDTO user)
+        public IActionResult Register([FromBody] CreateUserDTO payload)
         {
             try
             {
-                createUser.Run(user);
+                createUser.Run(payload);
                 return Ok(new { message = "User registered successfully "});
             }
             catch (Exception ex)
@@ -49,12 +49,11 @@ namespace MyProject.Controllers
             try
             {
                 User user = login.Run(payload.Email, payload.Password);
-                string token = tokenService.GenerateToken(user);
+                string accessToken = tokenService.GenerateToken(user);
                 return Ok(new
                 {
                     message = "Login successfull!",
-                    user = new { user.Name},
-                    token = token
+                    token = accessToken
                 });
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using UsersAPI.Domain.DTOs.Users;
+using UsersAPI.Domain.Entitys;
 
 namespace MyProject.AppLogic.UseCasesInterfaces.Users
 {

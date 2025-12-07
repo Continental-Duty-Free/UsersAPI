@@ -9,9 +9,15 @@ namespace UsersAPI.Domain.Mappers
         {
             return new UserSimpleDTO()
             {
-                Email = user.Email,
-                Username = user.Username,
-                Name = user.Name
+                Email = user.Email
+            };
+        }
+
+        public static User CreateUserDTO_To_User(CreateUserDTO dto)
+        {
+            return new User()
+            {
+                Email = dto.Email
             };
         }
     }

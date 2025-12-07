@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Data.Repos.EF;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.ReposInterfaces;
@@ -14,32 +15,24 @@ namespace UsersAPI.Data.Repos.EF
             this.db = db;
         }
 
-        public void Create(User entity)
+        public User Create(User entity)
         {
-            try
-            {
-                db.Users.Add(entity);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            db.Users.Add(entity);
+            db.SaveChanges();
+            return entity;
+        }
+
+        public void CreatePerson(User user, Person person)
+        {
+            db.Persons.Add(person);
+            db.SaveChanges();
         }
 
         public User FindByEmail(string email)
         {
-            try
-            {
-                User user = db.Users
-                    .Where(user => user.Email == email)
-                    .FirstOrDefault();
-                return user;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            return db.Users
+                .Include(user => user.Person)
+                .FirstOrDefault(user => user.Email == email);
         }
 
         public IEnumerable<User> GetAll()
@@ -50,6 +43,13 @@ namespace UsersAPI.Data.Repos.EF
         public User GetById(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Person GetPersonByUserId(int id)
+        {
+            return db.Persons
+                .Where(person => person.UserId == id)
+                .FirstOrDefault();
         }
 
         public void Remove(int id)

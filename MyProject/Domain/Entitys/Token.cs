@@ -17,28 +17,31 @@ namespace UsersAPI.Domain.Entitys
 
         public string GenerateToken(User user)
         {
-            var secretKey = _configuration["Jwt:SecretKey"]
-                ?? throw new InvalidOperationException("JWT SecretKey no configurada");
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
+            var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("Id", user.Id.ToString()),
-                new Claim("name", user.Name)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email)
             };
+
+            if (user.Person != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Name, user.Person.Name));
+                claims.Add(new Claim(ClaimTypes.Surname, user.Person.LastName));
+            }
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured"))
+            );
+
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(
-                    Convert.ToDouble(_configuration["Jwt:ExpirationMinutes"])),
+                expires: DateTime.UtcNow.AddMinutes(
+                    Convert.ToDouble(_configuration["Jwt:ExpirationMinutes"] ?? "60")
+                ),
                 signingCredentials: credentials
             );
 

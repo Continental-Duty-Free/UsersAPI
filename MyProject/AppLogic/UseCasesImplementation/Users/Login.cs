@@ -10,12 +10,12 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Users
     public class Login : ILogin
     {
         public readonly IUserRepository repository;
-        private readonly PasswordHasher<User> passwordHasher;
+        private readonly PasswordHasher<Person> passwordHasher;
 
         public Login(IUserRepository repository)
         {
             this.repository = repository;
-            this.passwordHasher = new PasswordHasher<User>();
+            this.passwordHasher = new PasswordHasher<Person>();
         }
 
         public User Run(string email, string password)
@@ -24,9 +24,11 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Users
             if (user == null)
                 throw new Exception("Invalid credentials or user not found");
 
-            var result = passwordHasher.VerifyHashedPassword(user, password, user.Password);
+            Person person = repository.GetPersonByUserId(user.Id);
+            var result = passwordHasher.VerifyHashedPassword(person, person.Password, password);
             if (result == PasswordVerificationResult.Success)
                 throw new Exception("Invalid credentials or user not found");
+
             return user;
         }
     }

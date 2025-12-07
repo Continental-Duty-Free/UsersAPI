@@ -1,36 +1,44 @@
-﻿using MyProject.AppLogic.UseCasesInterfaces.Users;
+﻿using Microsoft.AspNetCore.Identity;
+using MyProject.AppLogic.UseCasesInterfaces.Users;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using UsersAPI.Domain.DTOs.Users;
-using UsersAPI.Domain.ReposInterfaces;
 using UsersAPI.Domain.Entitys;
-using Microsoft.AspNetCore.Identity;
+using UsersAPI.Domain.Mappers;
+using UsersAPI.Domain.ReposInterfaces;
 
 namespace MyProject.AppLogic.UseCasesImplementation.Users
 {
     public class CreateUser : ICreateUser
     {
         private IUserRepository repository;
-        private readonly PasswordHasher<User> passwordHasher;
+        PasswordHasher<Person> passwordHasher;
 
         public CreateUser(IUserRepository repository)
         {
             this.repository = repository;
-            this.passwordHasher = new PasswordHasher<User>();
+            this.passwordHasher = new PasswordHasher<Person>();
         }
 
-        public void Run(CreateUserDTO user)
+        public void Run(CreateUserDTO dto)
         {
-            if (repository.FindByEmail(user.Email) != null)
+            if (repository.FindByEmail(dto.Email) != null)
                 throw new Exception("Please be so kind of choosing another email");
-            var newUser = new User()
+            var createdUser = repository.Create(UserMapper.CreateUserDTO_To_User(dto));
+            CreatePerson(dto, createdUser);
+        }
+
+        public void CreatePerson(CreateUserDTO dto, User user)
+        {   
+            Person person = new Person()
             {
-                Email = user.Email,
-                Password = user.Password,
-                Name = user.Name,
-                Username = user.Username
+                UserId = user.Id,
+                Password = dto.Password,
+                Name = dto.Name,
+                LastName = dto.LastName
             };
-            user.Password = passwordHasher.HashPassword(newUser, user.Password);
-            repository.Create(newUser);
+            person.Password = passwordHasher.HashPassword(person, person.Password); ;
+            repository.CreatePerson(user, person);
         }
     }
 }
