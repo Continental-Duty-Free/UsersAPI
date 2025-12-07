@@ -26,7 +26,7 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Users
 
             Person person = repository.GetPersonByUserId(user.Id);
             var result = passwordHasher.VerifyHashedPassword(person, person.Password, password);
-            if (result == PasswordVerificationResult.Success)
+            if (result != PasswordVerificationResult.Success)
                 throw new Exception("Invalid credentials or user not found");
 
             return user;
