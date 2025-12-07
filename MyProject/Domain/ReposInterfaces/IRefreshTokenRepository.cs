@@ -1,6 +1,6 @@
 ﻿namespace UsersAPI.Domain.ReposInterfaces
 {
-    public class ITokenRepository
+    public class IRefreshTokenRepository
     {
     }
 }
