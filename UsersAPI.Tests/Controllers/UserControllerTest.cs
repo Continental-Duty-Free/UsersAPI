@@ -61,10 +61,12 @@ namespace UsersAPI.Tests.Controllers
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
+
             var response = result as OkObjectResult;
             var messageProperty = response.Value.GetType().GetProperty("message");
-            var messageValue = messageProperty.GetValue(response) as string;
-            messageValue.Should().Be("User registered successfully");
+            var messageValue = messageProperty.GetValue(response.Value) as string;
+
+            Assert.Equal("User registered successfully", messageValue); 
         }
 
     }
