@@ -25,11 +25,5 @@ namespace UsersAPI.Domain.Entitys
         [StringLength(30, MinimumLength = 8, ErrorMessage = "Email should be between 8 and 30 characters long")]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [StringLength(15, MinimumLength = 9, ErrorMessage = "Phone should be between 9 and 13 characters long")]
-        public string Phone { get; set; }
-
-        public string Token { get; set; }
     }
 }

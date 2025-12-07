@@ -1,4 +1,5 @@
-﻿using UsersAPI.AppLogic.UseCasesInterfaces.Users;
+﻿using Microsoft.AspNetCore.Identity;
+using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.Mappers;
@@ -9,15 +10,23 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Users
     public class Login : ILogin
     {
         public readonly IUserRepository repository;
+        private readonly PasswordHasher<User> passwordHasher;
 
         public Login(IUserRepository repository)
         {
             this.repository = repository;
+            this.passwordHasher = new PasswordHasher<User>();
         }
 
         public User Run(string email, string password)
         {
-            User user = repository.Login(email, password);
+            User user = repository.FindByEmail(email);
+            if (user == null)
+                throw new Exception("Invalid credentials or user not found");
+
+            var result = passwordHasher.VerifyHashedPassword(user, password, user.Password);
+            if (result == PasswordVerificationResult.Success)
+                throw new Exception("Invalid credentials or user not found");
             return user;
         }
     }

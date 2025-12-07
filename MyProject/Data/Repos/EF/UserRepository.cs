@@ -1,4 +1,5 @@
-﻿using MyProject.Data.Repos.EF;
+﻿using Microsoft.AspNetCore.Identity;
+using MyProject.Data.Repos.EF;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.ReposInterfaces;
 
@@ -49,13 +50,6 @@ namespace UsersAPI.Data.Repos.EF
         public User GetById(int id)
         {
             throw new NotImplementedException();
-        }
-
-        public User Login(string email, string password)
-        {
-            return db.Users
-                .Where(user => user.Email == email && user.Password == password)
-                .FirstOrDefault();
         }
 
         public void Remove(int id)

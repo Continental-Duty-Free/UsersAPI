@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.AppLogic.UseCasesInterfaces.Users;
-using UsersAPI.AppLogic.UseCasesInterfaces.Token;
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
@@ -16,13 +15,12 @@ namespace MyProject.Controllers
     {
         private readonly ICreateUser createUser;
         private readonly ILogin login;
-        private readonly IGenerateToken generateToken;
-
-        public UserController(ICreateUser createUser, ILogin login, IGenerateToken generateToken)
+        private readonly Token tokenService;
+        public UserController(ICreateUser createUser, ILogin login, Token tokenService)
         {
             this.createUser = createUser;
             this.login = login;
-            this.generateToken = generateToken;
+            this.tokenService = tokenService;
         }
 
         [HttpPost("Register")]
@@ -51,9 +49,7 @@ namespace MyProject.Controllers
             try
             {
                 User user = login.Run(payload.Email, payload.Password);
-                if (user == null)
-                    throw new Exception("Invalid credentials or user not found");
-                string token = generateToken.Run(user);
+                string token = tokenService.GenerateToken(user);
                 return Ok(new
                 {
                     message = "Login successfull!",
