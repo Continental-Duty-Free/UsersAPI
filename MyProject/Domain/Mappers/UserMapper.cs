@@ -14,6 +14,5 @@ namespace UsersAPI.Domain.Mappers
                 Name = user.Name
             };
         }
-
     }
 }

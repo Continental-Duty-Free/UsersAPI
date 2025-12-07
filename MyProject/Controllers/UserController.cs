@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.AppLogic.UseCasesInterfaces.Users;
+using UsersAPI.AppLogic.UseCasesInterfaces.Token;
+using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
+using UsersAPI.Domain.Entitys;
 
 namespace MyProject.Controllers
 {
@@ -12,10 +15,14 @@ namespace MyProject.Controllers
     public class UserController : ControllerBase
     {
         private readonly ICreateUser createUser;
+        private readonly ILogin login;
+        private readonly IGenerateToken generateToken;
 
-        public UserController(ICreateUser createUser)
+        public UserController(ICreateUser createUser, ILogin login, IGenerateToken generateToken)
         {
             this.createUser = createUser;
+            this.login = login;
+            this.generateToken = generateToken;
         }
 
         [HttpPost("Register")]
@@ -39,12 +46,20 @@ namespace MyProject.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult Login([FromBody] CreateUserDTO user)
+        public IActionResult Login([FromBody] LoginRequestDTO payload)
         {
             try
             {
-                createUser.Run(user);
-                return Ok(new { message = "User registered successfully " });
+                User user = login.Run(payload.Email, payload.Password);
+                if (user == null)
+                    throw new Exception("Invalid credentials or user not found");
+                string token = generateToken.Run(user);
+                return Ok(new
+                {
+                    message = "Login successfull!",
+                    user = new { user.Name},
+                    token = token
+                });
             }
             catch (Exception ex)
             {

@@ -1,6 +1,10 @@
-﻿namespace UsersAPI.AppLogic.UseCasesInterfaces.Users
+﻿using UsersAPI.Domain.DTOs.Users;
+using UsersAPI.Domain.Entitys;
+
+namespace UsersAPI.AppLogic.UseCasesInterfaces.Users
 {
-    public class ILogin
+    public interface ILogin
     {
+        User Run(string email, string password);
     }
 }

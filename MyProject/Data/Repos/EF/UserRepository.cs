@@ -51,6 +51,13 @@ namespace UsersAPI.Data.Repos.EF
             throw new NotImplementedException();
         }
 
+        public User Login(string email, string password)
+        {
+            return db.Users
+                .Where(user => user.Email == email && user.Password == password)
+                .FirstOrDefault();
+        }
+
         public void Remove(int id)
         {
             throw new NotImplementedException();

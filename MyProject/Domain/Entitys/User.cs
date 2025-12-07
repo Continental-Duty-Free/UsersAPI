@@ -29,5 +29,7 @@ namespace UsersAPI.Domain.Entitys
         [Required]
         [StringLength(15, MinimumLength = 9, ErrorMessage = "Phone should be between 9 and 13 characters long")]
         public string Phone { get; set; }
+
+        public string Token { get; set; }
     }
 }
