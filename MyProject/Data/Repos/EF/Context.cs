@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UsersAPI.Domain.Entitys;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyProject.Data.Repos.EF
 {
@@ -12,6 +13,8 @@ namespace MyProject.Data.Repos.EF
 
         public DbSet<User> Users { get; set; }
         public DbSet<Person> Persons { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +29,11 @@ namespace MyProject.Data.Repos.EF
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<Person>()
+                .HasDiscriminator<string>("UserType") 
+                .HasValue<Customer>("Customer")                
+                .HasValue<Employee>("Employee");
         }
     }
 }

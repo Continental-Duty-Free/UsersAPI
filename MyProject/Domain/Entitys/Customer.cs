@@ -1,6 +1,7 @@
 ﻿namespace UsersAPI.Domain.Entitys
 {
-    public class Customer
+    public class Customer : User
     {
+
     }
 }
