@@ -41,7 +41,7 @@ namespace UsersAPI.Tests.Controllers
         }
 
         [Fact]
-        public void UserController_Register_ReturnOk()
+        public void Register_Ok()
         {
             //Arrange
             var user = new CreateUserDTO()
@@ -67,6 +67,12 @@ namespace UsersAPI.Tests.Controllers
             var messageValue = messageProperty.GetValue(response.Value) as string;
 
             Assert.Equal("User registered successfully", messageValue); 
+        }
+
+        [Fact]
+        public void Login_Ok()
+        {
+
         }
 
     }
