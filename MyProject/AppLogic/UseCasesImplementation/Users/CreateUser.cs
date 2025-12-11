@@ -2,6 +2,7 @@
 using MyProject.AppLogic.UseCasesInterfaces.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.EntitysExceptions;

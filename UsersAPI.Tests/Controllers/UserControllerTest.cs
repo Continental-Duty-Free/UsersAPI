@@ -40,6 +40,7 @@ namespace UsersAPI.Tests.Controllers
             this.TokenService = A.Fake<Token>();
         }
 
+        /*
         [Fact]
         public void Register_Ok()
         {
@@ -68,6 +69,7 @@ namespace UsersAPI.Tests.Controllers
 
             Assert.Equal("User registered successfully", messageValue); 
         }
+        */
 
         [Fact]
         public void Login_Ok()

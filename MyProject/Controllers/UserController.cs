@@ -26,6 +26,7 @@ namespace MyProject.Controllers
             this.logger = logger;
         }
 
+        /*
         [HttpPost("Register")]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
@@ -77,5 +78,6 @@ namespace MyProject.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+        */
     }
 }

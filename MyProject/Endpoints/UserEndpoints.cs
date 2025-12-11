@@ -13,9 +13,18 @@ namespace UsersAPI.Endpoints
     {
         public static void MapUsersEndPoints(this WebApplication app)
         {
-            var userGroup = app.MapGroup("/api/User");
-            userGroup.MapPost("", Register).WithName("Register");
-            userGroup.MapPost("/login", Login).WithName("Login");
+            var userGroup = app.MapGroup("/api/User")
+                .RequireAuthorization()
+                .WithOpenApi();
+
+            userGroup.MapPost("", Register)
+                .WithName("Register")
+                .WithSummary("Register a new user")
+                .AllowAnonymous();
+            userGroup.MapPost("/login", Login)
+                .WithName("Login")
+                .WithSummary("Get authenticated in the system via Login")
+                .AllowAnonymous();
         }
 
         public static IResult Register(
@@ -40,7 +49,7 @@ namespace UsersAPI.Endpoints
             }
         }
 
-        public static IResult Login(
+        public static async Task<IResult> Login(
             [FromBody] LoginRequestDTO payload,
             ILogin login,
             Token tokenService,
@@ -48,7 +57,7 @@ namespace UsersAPI.Endpoints
         {
             try
             {
-                User user = login.Run(payload.Email, payload.Password);
+                var user = await login.Run(payload.Email, payload.Password);
                 string accessToken = tokenService.GenerateToken(user);
                 return Results.Ok(new
                 {
@@ -65,10 +74,7 @@ namespace UsersAPI.Endpoints
             catch (Exception ex)
             {
                 logger.LogError("An error ocurred while trying to create a new user " + ex.Message);
-                return Results.BadRequest(new
-                {
-                    error = ex.Message
-                });
+                return Results.StatusCode(500);
             }
         }
     }

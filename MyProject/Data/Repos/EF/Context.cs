@@ -21,6 +21,11 @@ namespace MyProject.Data.Repos.EF
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("UserType")
+                .HasValue<Customer>("Customer")
+                .HasValue<Employee>("Employee");
+
+            modelBuilder.Entity<User>()
                 .HasOne(u => u.Person)
                 .WithOne(p => p.User)
                 .HasForeignKey<Person>(p => p.UserId)
@@ -29,11 +34,6 @@ namespace MyProject.Data.Repos.EF
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
-
-            modelBuilder.Entity<Person>()
-                .HasDiscriminator<string>("UserType") 
-                .HasValue<Customer>("Customer")                
-                .HasValue<Employee>("Employee");
         }
     }
 }

@@ -28,11 +28,12 @@ namespace UsersAPI.Data.Repos.EF
             db.SaveChanges();
         }
 
-        public User FindByEmail(string email)
+        public async Task<User> FindByEmail(string email)
         {
-            return db.Users
+            User user =  await db.Users
                 .Include(user => user.Person)
-                .FirstOrDefault(user => user.Email == email);
+                .FirstOrDefaultAsync(user => user.Email == email);
+            return user;
         }
 
         public IEnumerable<User> GetAll()
