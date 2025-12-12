@@ -49,7 +49,7 @@ namespace UsersAPI.Endpoints
             }
         }
 
-        public static async Task<IResult> Login(
+        public static IResult Login(
             [FromBody] LoginRequestDTO payload,
             ILogin login,
             Token tokenService,
@@ -57,7 +57,7 @@ namespace UsersAPI.Endpoints
         {
             try
             {
-                var user = await login.Run(payload.Email, payload.Password);
+                var user =  login.Run(payload.Email, payload.Password);
                 string accessToken = tokenService.GenerateToken(user);
                 return Results.Ok(new
                 {

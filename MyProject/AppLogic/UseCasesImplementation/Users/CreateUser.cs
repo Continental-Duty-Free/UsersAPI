@@ -39,7 +39,7 @@ namespace MyProject.AppLogic.UseCasesImplementation.Users
                 Name = dto.Name,
                 LastName = dto.LastName
             };
-            person.Password = passwordHasher.HashPassword(person, person.Password); ;
+            person.Password = passwordHasher.HashPassword(person, person.Password); 
             repository.CreatePerson(user, person);
         }
     }
