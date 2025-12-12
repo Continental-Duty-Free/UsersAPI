@@ -15,15 +15,21 @@ namespace MyProject.Data.Repos.EF
         public DbSet<Person> Persons { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categorys { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<User>()
-                .HasDiscriminator<string>("UserType")
-                .HasValue<Customer>("Customer")
-                .HasValue<Employee>("Employee");
+                            .ToTable("Users");  
+
+            modelBuilder.Entity<Customer>()
+                .ToTable("Customers");  
+
+            modelBuilder.Entity<Employee>()
+                .ToTable("Employees");  
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Person)

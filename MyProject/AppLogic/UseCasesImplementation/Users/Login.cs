@@ -20,9 +20,9 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Users
             this.passwordHasher = new PasswordHasher<Person>();
         }
 
-        public async Task<User> Run(string email, string password)
+        public User Run(string email, string password)
         {
-            User user = await repository.FindByEmail(email);
+            User user = repository.FindByEmail(email);
             if (user == null)
                 throw new UserException("Invalid credentials or user not found");
 

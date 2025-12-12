@@ -6,6 +6,6 @@
         void Remove(int id);
         void Update (T entity);
         T GetById (int id);
-        IEnumerable<T> GetAll();
+        IQueryable<T> GetAll();
     }
 }

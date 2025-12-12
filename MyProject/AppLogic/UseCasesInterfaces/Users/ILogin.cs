@@ -5,6 +5,6 @@ namespace UsersAPI.AppLogic.UseCasesInterfaces.Users
 {
     public interface ILogin
     {
-        Task<User> Run(string email, string password);
+        User Run(string email, string password);
     }
 }

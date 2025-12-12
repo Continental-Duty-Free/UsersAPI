@@ -28,17 +28,11 @@ namespace UsersAPI.Data.Repos.EF
             db.SaveChanges();
         }
 
-        public async Task<User> FindByEmail(string email)
+        public User FindByEmail(string email)
         {
-            User user =  await db.Users
+            return db.Users
                 .Include(user => user.Person)
-                .FirstOrDefaultAsync(user => user.Email == email);
-            return user;
-        }
-
-        public IEnumerable<User> GetAll()
-        {
-            throw new NotImplementedException();
+                .FirstOrDefault(user => user.Email == email);
         }
 
         public User GetById(int id)
@@ -59,6 +53,11 @@ namespace UsersAPI.Data.Repos.EF
         }
 
         public void Update(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<User> Repository<User>.GetAll()
         {
             throw new NotImplementedException();
         }
