@@ -5,42 +5,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyProject.AppLogic.UseCasesImplementation.Users;
 using MyProject.AppLogic.UseCasesInterfaces.Users;
-using MyProject.Controllers;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UsersAPI.AppLogic.UseCasesImplementation.Users;
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.ReposInterfaces;
-using Xunit;
+using UsersAPI.Endpoints;
+using Microsoft.AspNetCore.Http.HttpResults;
 
-//https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices
-namespace UsersAPI.Tests.Controllers
+namespace UsersAPI.Tests.Endpoints
 {
-    public class UserControllerTest
+    public class UserEndpointsTests
     {
         private readonly IUserRepository UserRepository;
-        private readonly ILogger Logger;
+        private readonly ILogger<Program> Logger;
         private readonly ILogin Login;
         private readonly ICreateUser CreateUser;
         private readonly Token TokenService;
 
-        public UserControllerTest() 
+        public UserEndpointsTests()
         {
             this.UserRepository = A.Fake<IUserRepository>();
-            this.Logger = A.Fake<ILogger>();
+            this.Logger = A.Fake<ILogger<Program>>();
             this.Login = A.Fake<ILogin>();
             this.CreateUser = A.Fake<ICreateUser>();
             this.TokenService = A.Fake<Token>();
         }
 
-        /*
         [Fact]
         public void Register_Ok()
         {
@@ -54,28 +49,23 @@ namespace UsersAPI.Tests.Controllers
                 PasswordConfirmation = "Password123"
             };
             A.CallTo(() => CreateUser.Run(user)).DoesNothing();
-            var controller = new UserController(CreateUser, Login, TokenService, Logger);
 
             //Act
-            var result = controller.Register(user);
+            var response = UserEndpoints.Register(user, CreateUser, Logger);
 
-            //Assert
+            //Assert         
+            response.Should().NotBeNull();
+            response.Should().BeOfType(typeof(Ok));
+
+            var result = response as Ok;
             result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(OkObjectResult));
-
-            var response = result as OkObjectResult;
-            var messageProperty = response.Value.GetType().GetProperty("message");
-            var messageValue = messageProperty.GetValue(response.Value) as string;
-
-            Assert.Equal("User registered successfully", messageValue); 
+            result.StatusCode.Should().Be(200);
         }
-        */
 
         [Fact]
         public void Login_Ok()
         {
 
         }
-
     }
 }
