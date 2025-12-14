@@ -12,7 +12,7 @@ using MyProject.Data.Repos.EF;
 namespace UsersAPI.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20251212033944_Initial")]
+    [Migration("20251214012715_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

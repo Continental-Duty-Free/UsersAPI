@@ -22,12 +22,6 @@ namespace UsersAPI.Data.Repos.EF
             return entity;
         }
 
-        public void CreatePerson(User user, Person person)
-        {
-            db.Persons.Add(person);
-            db.SaveChanges();
-        }
-
         public User FindByEmail(string email)
         {
             return db.Users

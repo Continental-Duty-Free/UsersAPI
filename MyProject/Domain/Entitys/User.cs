@@ -10,7 +10,8 @@ namespace UsersAPI.Domain.Entitys
         [Key]
         public int Id { get; set; }
 
-        public Person? Person { get; set; }
+        [Required]
+        public Person Person { get; set; }
 
         [Required]
         [StringLength(60, MinimumLength = 8, ErrorMessage = "Email should be between 8 and 60 characters long")]

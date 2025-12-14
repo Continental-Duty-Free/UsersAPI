@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client;
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
-using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.EntitysExceptions;
-using UsersAPI.Domain.Mappers;
 using UsersAPI.Domain.ReposInterfaces;
 
 namespace UsersAPI.AppLogic.UseCasesImplementation.Users

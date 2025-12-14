@@ -1,4 +1,5 @@
-﻿using UsersAPI.Domain.DTOs.Users;
+﻿using UsersAPI.Domain.DTOs.Customers;
+using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
 
 namespace UsersAPI.Domain.Mappers
@@ -10,14 +11,6 @@ namespace UsersAPI.Domain.Mappers
             return new UserSimpleDTO()
             {
                 Email = user.Email
-            };
-        }
-
-        public static User CreateUserDTO_To_User(CreateUserDTO dto)
-        {
-            return new User()
-            {
-                Email = dto.Email
             };
         }
     }

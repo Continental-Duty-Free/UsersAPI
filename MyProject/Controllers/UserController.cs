@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using MyProject.AppLogic.UseCasesInterfaces.Users;
+/*using MyProject.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.EntitysExceptions;
+*/
 
 namespace MyProject.Controllers
 {
@@ -14,6 +15,7 @@ namespace MyProject.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        /*
         private readonly ICreateUser createUser;
         private readonly ILogin login;
         private readonly Token tokenService;
@@ -26,7 +28,7 @@ namespace MyProject.Controllers
             this.logger = logger;
         }
 
-        /*
+        
         [HttpPost("Register")]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]

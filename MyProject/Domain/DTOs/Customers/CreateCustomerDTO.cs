@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using UsersAPI.Domain.Entitys;
 
-namespace UsersAPI.Domain.DTOs.Users
+namespace UsersAPI.Domain.DTOs.Customers
 {
-    public class CreateUserDTO 
+    public class CreateCustomerDTO
     {
         public string Name { get; set; }
 

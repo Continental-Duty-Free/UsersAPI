@@ -2,16 +2,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MyProject.AppLogic.UseCasesImplementation.Users;
-using MyProject.AppLogic.UseCasesInterfaces.Users;
-using MyProject.Data.Repos.EF;
-using System.Text;
 using UsersAPI.AppLogic.UseCasesImplementation.Users;
 using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Data.Repos.EF;
+using System.Text;
+using UsersAPI.AppLogic.UseCasesImplementation.Customers;
+using UsersAPI.AppLogic.UseCasesInterfaces.Customers;
 using UsersAPI.Domain.Entitys;
 using UsersAPI.Domain.ReposInterfaces;
 using UsersAPI.Endpoints;
+using UsersAPI.Middlewares;
+using MyProject.Data.Repos.EF;
 
 public partial class Program
 {
@@ -31,7 +32,7 @@ public partial class Program
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-        builder.Services.AddScoped<ICreateUser, CreateUser>();
+        builder.Services.AddScoped<ICreateCustomer, CreateCustomer>();
         builder.Services.AddScoped<ILogin, Login>();
 
         builder.Services.AddScoped<Token>();
@@ -59,6 +60,8 @@ public partial class Program
 
         var app = builder.Build();
 
+        app.UseGlobalExceptionHandler();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -75,6 +78,8 @@ public partial class Program
         app.UseAuthorization();
 
         app.MapUsersEndPoints();
+        app.MapCustomersEndPoints();
+        app.UseMiddleware<GlobalExceptionHandler>();
 
         app.Run();
     }
