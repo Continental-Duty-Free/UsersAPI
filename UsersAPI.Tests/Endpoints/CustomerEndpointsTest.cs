@@ -61,8 +61,8 @@ namespace UsersAPI.Tests.Endpoints
                 Email = "test@gmail.com",
                 Name = "Test",
                 LastName = "User",
-                Password = "Password123",
-                PasswordConfirmation = "Password123"
+                Password = "Password123!",
+                PasswordConfirmation = "Password123!"
             };
 
             // Act
@@ -75,7 +75,7 @@ namespace UsersAPI.Tests.Endpoints
         }
 
         [Fact]
-        public void Register_WithDuplicateEmail_ReturnsBadRequest()
+        public void Register_WithDuplicateEmail()
         {
             // Arrange
             var user1 = new CreateCustomerDTO
@@ -83,36 +83,33 @@ namespace UsersAPI.Tests.Endpoints
                 Email = "duplicate@gmail.com",
                 Name = "First",
                 LastName = "User",
-                Password = "Password123",
-                PasswordConfirmation = "Password123"
+                Password = "Password123!",
+                PasswordConfirmation = "Password123!"
             };
 
             var user2 = new CreateCustomerDTO
             {
-                Email = "duplicate@gmail.com", // Mismo email
+                Email = "duplicate@gmail.com", 
                 Name = "Second",
                 LastName = "User",
-                Password = "Password123",
-                PasswordConfirmation = "Password123"
+                Password = "Password123!",
+                PasswordConfirmation = "Password123!"
             };
 
             // Act - Crear primer usuario
-            var response1 = CustomerEndpoints.Register(user1, _createCustomer, _logger);
-            Assert.IsType<Created>(response1);
+            var responseOk = CustomerEndpoints.Register(user1, _createCustomer, _logger);
+            Assert.IsType<Created>(responseOk);
 
-            try
-            {
-                // Act - Intentar crear segundo usuario con mismo email
-                var response2 = CustomerEndpoints.Register(user2, _createCustomer, _logger);
-            }
-            catch (UserException ex)
-            {
-                Assert.Equal($"{ex.Message}", ex.Message);
-            }
+            var responseBadRequest = CustomerEndpoints.Register(user2, _createCustomer, _logger);
+
+            //Assert
+            responseBadRequest.Should().NotBeNull();
+            var result = Assert.IsType<BadRequest<object>>(responseBadRequest);
+            Assert.Equal(400, result.StatusCode);
         }
 
         [Fact]
-        public void Register_WithInvalidPassword_ReturnsBadRequest()
+        public void Register_WithPasswordTooShort()
         {
             // Arrange
             var user = new CreateCustomerDTO
@@ -134,7 +131,7 @@ namespace UsersAPI.Tests.Endpoints
         }
 
         [Fact]
-        public void Register_WithMismatchedPasswords_ReturnsBadRequest()
+        public void Register_WithMismatchedPasswords()
         {
             // Arrange
             var user = new CreateCustomerDTO
@@ -142,8 +139,8 @@ namespace UsersAPI.Tests.Endpoints
                 Email = "mismatch@gmail.com",
                 Name = "Test",
                 LastName = "User",
-                Password = "Password123",
-                PasswordConfirmation = "DifferentPassword123"
+                Password = "Password123!",
+                PasswordConfirmation = "DifferentPassword123!"
             };
 
             // Act

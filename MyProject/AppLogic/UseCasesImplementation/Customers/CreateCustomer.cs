@@ -29,12 +29,9 @@ namespace UsersAPI.AppLogic.UseCasesImplementation.Customers
 
         public Person CreatePerson(CreateCustomerDTO dto)
         {
-            Person person = new Person()
-            {
-                Password = dto.Password,
-                Name = dto.Name,
-                LastName = dto.LastName
-            };
+            if (dto.Password != dto.PasswordConfirmation)
+                throw new Exception("Password and password confirmation need to be the same");
+            Person person = new Person(dto.Name, dto.LastName, dto.Password);
             person.Password = passwordHasher.HashPassword(person, person.Password);
             return person;
         }

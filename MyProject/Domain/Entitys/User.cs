@@ -17,5 +17,11 @@ namespace UsersAPI.Domain.Entitys
         [StringLength(60, MinimumLength = 8, ErrorMessage = "Email should be between 8 and 60 characters long")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
+
+        public User(string email, Person person)
+        {
+            Email = email;
+            Person = person;
+        }
     }
 }

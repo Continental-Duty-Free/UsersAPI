@@ -60,8 +60,6 @@ public partial class Program
 
         var app = builder.Build();
 
-        app.UseGlobalExceptionHandler();
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -79,7 +77,6 @@ public partial class Program
 
         app.MapUsersEndPoints();
         app.MapCustomersEndPoints();
-        app.UseMiddleware<GlobalExceptionHandler>();
 
         app.Run();
     }

@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using MyProject.Data.Repos.EF;
+using System.Net;
+using UsersAPI.AppLogic.UseCasesInterfaces.Users;
 using UsersAPI.Domain.DTOs.Users;
 using UsersAPI.Domain.Entitys;
-using UsersAPI.AppLogic.UseCasesInterfaces.Users;
+using UsersAPI.Domain.EntitysExceptions;
 
 namespace UsersAPI.Endpoints
 {
@@ -16,7 +21,7 @@ namespace UsersAPI.Endpoints
             userGroup.MapPost("/login", Login)
                 .WithName("Login")
                 .WithSummary("Get authenticated in the system via Login")
-                .AllowAnonymous();
+                .AllowAnonymous(); 
         }
 
         public static IResult Login(
@@ -25,14 +30,27 @@ namespace UsersAPI.Endpoints
             Token tokenService,
             ILogger<Program> logger)
         {
-            var user =  login.Run(payload.Email, payload.Password);
-            string accessToken = tokenService.GenerateToken(user);
-            return Results.Ok(new
+            try
+            { 
+                var user = login.Run(payload.Email, payload.Password);
+                string token = tokenService.GenerateToken(user);
+                return Results.Ok(new
                 {
                     message = "Login successfull!",
-                    token = accessToken,
+                    access_token = token,
                     name = user.Person.Name
                 });
+            }
+            catch (UserException ex)
+            {
+                logger.LogWarning(ex, "User exception occurred: " + ex.Message);
+                return Results.BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unhandled exception occurred: " + ex.Message);
+                return Results.StatusCode(500);
+            }
         }
     }
 }
